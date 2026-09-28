@@ -1,0 +1,164 @@
+/* ─── Biblioteca de animaciones (solo CSS) ─────────────────────────────── */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translate3d(0, 34px, 0); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translate3d(0, -26px, 0); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.88); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes slideFromLeft {
+  from { opacity: 0; transform: translate3d(-48px, 0, 0); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes slideFromRight {
+  from { opacity: 0; transform: translate3d(48px, 0, 0); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes blurIn {
+  from { opacity: 0; filter: blur(12px); transform: scale(1.04); }
+  to { opacity: 1; filter: blur(0); transform: none; }
+}
+
+@keyframes revealText {
+  from { opacity: 0; clip-path: inset(0 100% 0 0); filter: blur(4px); }
+  to { opacity: 1; clip-path: inset(0 -10% 0 0); filter: blur(0); }
+}
+
+@keyframes floating {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -10px, 0); }
+}
+
+@keyframes softPulse {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--c-btn, #b76e79) 45%, transparent); }
+  50% { box-shadow: 0 0 0 14px transparent; }
+}
+
+@keyframes shimmer {
+  from { background-position: -200% 0; }
+  to { background-position: 200% 0; }
+}
+
+@keyframes shineSweep {
+  0%, 60% { transform: translateX(-120%) skewX(-18deg); }
+  100% { transform: translateX(220%) skewX(-18deg); }
+}
+
+@keyframes flowerFloat {
+  0% { transform: translate3d(0, -12vh, 0) rotate(0deg); opacity: 0; }
+  10% { opacity: var(--petal-opacity, 0.8); }
+  50% { transform: translate3d(var(--drift, 40px), 50vh, 0) rotate(180deg); }
+  90% { opacity: var(--petal-opacity, 0.8); }
+  100% { transform: translate3d(calc(var(--drift, 40px) * -0.6), 112vh, 0) rotate(360deg); opacity: 0; }
+}
+
+@keyframes rotateSlow {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0; transform: scale(0.4); }
+  50% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes tick {
+  from { opacity: 0.2; transform: translateY(-40%); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes heartBeat {
+  0%, 100% { transform: scale(1); }
+  15% { transform: scale(1.12); }
+  30% { transform: scale(1); }
+  45% { transform: scale(1.08); }
+}
+
+@keyframes bounceSoft {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
+@keyframes eq {
+  0%, 100% { transform: scaleY(0.3); }
+  50% { transform: scaleY(1); }
+}
+
+@keyframes veilOut {
+  0% { opacity: 0; }
+  35% { opacity: 1; }
+  100% { opacity: 0; visibility: hidden; }
+}
+
+@keyframes glowBreath {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50% { opacity: 0.85; transform: scale(1.08); }
+}
+
+/* ─── Revelado al hacer scroll ───────────────────────────────────────────
+   JS (IntersectionObserver) solo agrega [data-shown]; CSS anima. */
+
+[data-reveal] {
+  opacity: 0;
+}
+
+[data-reveal][data-shown] {
+  animation-duration: 0.95s;
+  animation-timing-function: cubic-bezier(0.22, 0.8, 0.26, 1);
+  animation-fill-mode: both;
+  animation-delay: var(--delay, 0ms);
+}
+
+[data-reveal='fadeIn'][data-shown] { animation-name: fadeIn; }
+[data-reveal='fadeInUp'][data-shown] { animation-name: fadeInUp; }
+[data-reveal='fadeInDown'][data-shown] { animation-name: fadeInDown; }
+[data-reveal='scaleIn'][data-shown] { animation-name: scaleIn; }
+[data-reveal='slideFromLeft'][data-shown] { animation-name: slideFromLeft; }
+[data-reveal='slideFromRight'][data-shown] { animation-name: slideFromRight; }
+[data-reveal='blurIn'][data-shown] { animation-name: blurIn; }
+[data-reveal='revealText'][data-shown] { animation-name: revealText; }
+/* Animación elegida por sección desde el CMS */
+[data-reveal='section'][data-shown] { animation-name: var(--s-anim, fadeInUp); }
+
+/* Sin animaciones (desactivadas en el tema o en la sección) */
+.no-anim [data-reveal],
+.no-anim [data-reveal][data-shown] {
+  opacity: 1;
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  [data-reveal] {
+    opacity: 1 !important;
+    animation: none !important;
+  }
+  .petals,
+  .sparkles {
+    display: none !important;
+  }
+}
