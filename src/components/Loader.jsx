@@ -17,7 +17,7 @@ export function rememberLoaderLook(data) {
   const t = data.theme;
   const look = {
     primary: t.primaryColor,
-    accent: t.accentColor,
+    accent: t.animationColor || t.accentColor,
     bg: t.backgroundColor,
     bg2: t.secondaryColor,
     text: t.textSecondaryColor,

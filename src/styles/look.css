@@ -1,0 +1,433 @@
+/* ═══ Propiedades visuales por sección (editables desde el CMS) ═════════════
+   Todo usa variables: los valores vienen validados desde SectionShell.jsx. */
+
+.xv .xv-section {
+  padding: var(--s-pad-top, var(--s-pad, var(--space))) var(--s-pad-right, var(--gutter)) var(--s-pad-bottom, var(--s-pad, var(--space)))
+    var(--s-pad-left, var(--gutter));
+  overflow: var(--s-overflow, hidden);
+  border-radius: var(--s-radius, 0);
+  border: var(--s-border-w, 0) var(--s-border-style, solid) var(--s-border, var(--c-border));
+}
+
+.xv .xv-section > .xv-container,
+.xv .xv-section > .xv-full {
+  opacity: var(--s-opacity, 1);
+}
+
+/* Altura mínima y posición vertical del contenido */
+.xv .xv-section--sized {
+  min-height: var(--s-min-h, auto);
+  display: flex;
+  flex-direction: column;
+  justify-content: var(--s-justify, center);
+}
+
+.xv--stage.has-nav .stage-slide > .xv-section {
+  min-height: max(var(--s-min-h, 0px), calc(100svh - var(--nav-h)));
+  justify-content: var(--s-justify, center);
+  padding-bottom: calc(var(--s-pad-bottom, var(--s-pad, var(--space))) + var(--pager-h));
+}
+
+/* Separación entre elementos (solo cuando el CMS la define) */
+.xv-section[style*='--s-gap'] .people,
+.xv-section[style*='--s-gap'] .countdown,
+.xv-section[style*='--s-gap'] .swatches,
+.xv-section[style*='--s-gap'] .story,
+.xv-section[style*='--s-gap'] .dedications,
+.xv-section[style*='--s-gap'] .split,
+.xv-section[style*='--s-gap'] .venue,
+.xv-section[style*='--s-gap'] .rsvp__guests {
+  gap: var(--s-gap);
+  column-gap: var(--s-gap);
+}
+
+.xv-section[style*='--s-gap'] .timeline__item,
+.xv-section[style*='--s-gap'] .masonry__item {
+  margin-bottom: var(--s-gap);
+}
+
+.xv-section[style*='--s-gap'] .masonry {
+  column-gap: var(--s-gap);
+}
+
+/* Estilos visuales predefinidos (clase visual) */
+.xv-look--framed > .xv-container {
+  padding: clamp(20px, 4vw, 48px);
+  border: var(--bw, 1px) solid color-mix(in srgb, var(--s-accent, var(--c-accent)) 55%, transparent);
+  border-radius: calc(var(--radius) * 1.4);
+  outline: 1px solid color-mix(in srgb, var(--s-accent, var(--c-accent)) 30%, transparent);
+  outline-offset: 8px;
+}
+
+.xv-look--glass > .xv-container {
+  padding: clamp(20px, 4vw, 48px);
+  border-radius: calc(var(--radius) * 1.4);
+  background: color-mix(in srgb, var(--c-card) 55%, transparent);
+  border: 1px solid color-mix(in srgb, var(--c-card) 70%, transparent);
+  backdrop-filter: blur(14px) saturate(1.15);
+  -webkit-backdrop-filter: blur(14px) saturate(1.15);
+  box-shadow: var(--shadow-soft);
+}
+
+.xv-look--elevated > .xv-container {
+  padding: clamp(20px, 4vw, 48px);
+  border-radius: calc(var(--radius) * 1.4);
+  background: var(--s-card, var(--c-card));
+  box-shadow: var(--shadow);
+}
+
+.xv-look--minimal .floral,
+.xv-look--minimal .sparkles,
+.xv-look--minimal .divider {
+  display: none;
+}
+
+/* ═══ Retroalimentación al hacer clic (solo CSS) ════════════════════════════ */
+
+.xv .btn,
+.xv .stage-pager button,
+.xv .stage-nav__link,
+.xv .stage-nav__menu,
+.xv .music__btn,
+.xv .choice__opt,
+.xv .upload-block__toggle,
+.xv .stage-panel__grid button,
+.xv .link-btn {
+  transition:
+    transform 0.25s cubic-bezier(0.3, 1.6, 0.5, 1),
+    background 0.35s,
+    color 0.35s,
+    box-shadow 0.35s,
+    opacity 0.3s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.xv .btn:active:not(:disabled),
+.xv .stage-pager button:active:not(:disabled),
+.xv .stage-nav__link:active,
+.xv .stage-nav__menu:active,
+.xv .music__btn:active,
+.xv .choice__opt:active,
+.xv .stage-panel__grid button:active,
+.xv .link-btn:active {
+  transform: scale(0.96);
+  transition-duration: 0.08s;
+}
+
+/* Onda (ripple) elegante desde el centro al presionar */
+.xv .btn::before,
+.xv .stage-pager button::before,
+.xv .music__btn::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--c-btn-text) 55%, transparent);
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.xv .stage-pager button,
+.xv .music__btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.xv .btn:active:not(:disabled)::before,
+.xv .stage-pager button:active:not(:disabled)::before,
+.xv .music__btn:active::before {
+  animation: xvRipple 0.6s ease-out;
+}
+
+@keyframes xvRipple {
+  from {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0.8;
+  }
+  to {
+    transform: translate(-50%, -50%) scale(28);
+    opacity: 0;
+  }
+}
+
+/* Brillo al pasar/enfocar */
+.xv .btn:focus-visible,
+.xv .stage-nav__link:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px var(--c-card),
+    0 0 0 5px var(--c-glow),
+    0 0 22px 4px var(--color-glow);
+}
+
+/* Confirmación visual: rebote breve de una opción elegida */
+.xv .choice__opt.is-checked {
+  animation: xvPop 0.35s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+
+@keyframes xvPop {
+  40% {
+    transform: scale(1.06);
+  }
+}
+
+/* ═══ Editor visual del CMS (vista previa con ?editor=1) ════════════════════ */
+
+.xv--editor [data-section] {
+  position: relative;
+  cursor: pointer;
+  outline: 2px dashed transparent;
+  outline-offset: -4px;
+  transition: outline-color 0.2s;
+}
+
+.xv--editor [data-section]:hover {
+  outline-color: color-mix(in srgb, var(--c-glow) 80%, transparent);
+}
+
+.xv--editor [data-section][data-selected] {
+  outline: 3px solid var(--c-glow);
+  outline-offset: -5px;
+  box-shadow: inset 0 0 0 9999px color-mix(in srgb, var(--c-glow) 5%, transparent);
+}
+
+.xv--editor [data-section]::after {
+  content: attr(data-label);
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 50;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--c-glow);
+  color: var(--c-btn-text);
+  font: 600 11px/1.4 system-ui, sans-serif;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.2s, transform 0.2s;
+  pointer-events: none;
+}
+
+.xv--editor [data-section]:hover::after,
+.xv--editor [data-section][data-selected]::after {
+  opacity: 1;
+  transform: none;
+}
+
+.xv--editor [data-section][data-selected]::after {
+  content: '✎ ' attr(data-label) ' · seleccionada';
+}
+
+/* En el editor los enlaces y formularios no deben robar el clic de selección */
+.xv--editor [data-section] a,
+.xv--editor [data-section] form {
+  pointer-events: none;
+}
+
+/* ═══ Reproductor de música (colores de la paleta) ═════════════════════════ */
+
+.xv .music__btn {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  color: var(--c-btn-text);
+  box-shadow: 0 10px 26px -10px var(--color-glow);
+}
+
+.xv .music__btn:hover {
+  background: linear-gradient(135deg, var(--c-btn-hover), var(--color-accent));
+}
+
+.xv .music.is-playing .music__btn {
+  animation: musicGlow 2.8s ease-in-out infinite;
+}
+
+@keyframes musicGlow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 var(--color-glow);
+  }
+  50% {
+    box-shadow: 0 0 0 12px transparent;
+  }
+}
+
+/* Ecualizador: solo se mueve mientras suena */
+.xv .music__bars {
+  position: absolute;
+  right: 62px;
+  bottom: 14px;
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 24px;
+  padding: 5px 9px;
+  border-radius: 99px;
+  background: color-mix(in srgb, var(--c-card) 88%, transparent);
+  box-shadow: var(--shadow-soft);
+  opacity: 0;
+  transform: translateX(8px) scale(0.9);
+  transition: opacity 0.35s, transform 0.35s;
+  pointer-events: none;
+}
+
+.xv .music.is-playing .music__bars {
+  opacity: 1;
+  transform: none;
+}
+
+.xv .music__bars i {
+  width: 3px;
+  height: 100%;
+  border-radius: 2px;
+  background: linear-gradient(to top, var(--color-primary), var(--color-accent));
+  transform-origin: bottom;
+  transform: scaleY(0.3);
+  animation: eq 0.9s ease-in-out infinite;
+  animation-play-state: paused;
+}
+
+.xv .music.is-playing .music__bars i {
+  animation-play-state: running;
+}
+
+/* Nombre de la canción */
+.xv .music__title {
+  position: absolute;
+  right: 62px;
+  bottom: 46px;
+  max-width: min(64vw, 280px);
+  padding: 6px 12px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--c-card) 94%, transparent);
+  color: var(--c-text);
+  font-size: 0.78em;
+  line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-shadow: var(--shadow-soft);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.35s, transform 0.35s;
+  pointer-events: none;
+}
+
+.xv .music__title span {
+  color: var(--c-glow);
+}
+
+.xv .music.show-title .music__title {
+  opacity: 1;
+  transform: none;
+}
+
+/* Aviso cuando el navegador bloquea el autoplay */
+.xv .music__cta {
+  position: absolute;
+  right: 0;
+  bottom: 66px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  color: var(--c-btn-text);
+  font-family: var(--f-subtitle);
+  font-size: 0.78em;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  box-shadow: 0 12px 30px -12px var(--color-glow);
+  animation: ctaIn 0.6s cubic-bezier(0.3, 1.6, 0.5, 1) both, softPulse 2.4s ease-in-out 0.6s infinite;
+}
+
+.xv .music__cta span {
+  font-size: 1.3em;
+  animation: floating 2.2s ease-in-out infinite;
+}
+
+@keyframes ctaIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.xv--stage .music {
+  bottom: max(16px, env(safe-area-inset-bottom));
+}
+
+/* ═══ Acceso discreto al panel ════════════════════════════════════════════ */
+
+.footer__admin {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+  font-size: 0.72em;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: inherit;
+  opacity: 0.55;
+  transition: opacity 0.3s, border-color 0.3s, transform 0.25s;
+}
+
+.footer__admin:hover,
+.footer__admin:focus-visible {
+  opacity: 1;
+  border-color: var(--s-accent, var(--c-accent));
+}
+
+.footer__admin:active {
+  transform: scale(0.96);
+}
+
+.stage-panel__admin,
+.nav-panel__admin {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.stage-panel__admin a,
+.nav-panel .nav-panel__admin a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--c-border);
+  color: var(--c-text-2);
+  font-family: var(--f-subtitle);
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: color 0.3s, border-color 0.3s, transform 0.25s;
+}
+
+.stage-panel__admin a:hover,
+.nav-panel .nav-panel__admin a:hover {
+  color: var(--c-primary);
+  border-color: var(--c-primary);
+}
+
+.stage-panel__admin a:active {
+  transform: scale(0.96);
+}

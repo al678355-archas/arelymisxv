@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useLiveInvitation } from '../hooks/useLiveInvitation.js';
 import { useReveal } from '../hooks/useReveal.js';
 import { useStage } from '../hooks/useStage.js';
+import { useEditorBridge } from '../hooks/useEditorBridge.js';
 import { themeVars, loadGoogleFonts } from '../lib/theme.js';
 import { applyFavicon } from '../lib/image.js';
 import Cover from './sections/Cover.jsx';
@@ -14,6 +15,7 @@ import StageNav from './components/StageNav.jsx';
 import Loader, { rememberLoaderLook } from '../components/Loader.jsx';
 import '../styles/site.css';
 import '../styles/stage.css';
+import '../styles/look.css';
 
 const COMPONENTS = {
   intro: Intro,
@@ -65,12 +67,16 @@ export function useSiteTheme(data) {
 }
 
 export default function InvitationPage() {
-  const { data, error, reload } = useLiveInvitation();
-  const preview = useMemo(() => new URLSearchParams(window.location.search).has('preview'), []);
+  const { data: liveData, error, reload } = useLiveInvitation();
+  const params = useMemo(() => new URLSearchParams(window.location.search), []);
+  const preview = params.has('preview');
+  // Editor visual del CMS: todas las secciones visibles y seleccionables con clic.
+  const editor = preview && params.has('editor');
   const hashKey = useMemo(() => window.location.hash.replace(/^#s-/, ''), []);
   const [opened, setOpened] = useState(preview);
   const rootRef = useRef(null);
   const music = useRef(null);
+  const { data } = useEditorBridge(liveData, editor, rootRef);
   const vars = useSiteTheme(data);
   const [loaderGone, setLoaderGone] = useState(false);
   const ready = Boolean(data);
@@ -84,7 +90,7 @@ export default function InvitationPage() {
 
   const sections = data?.sections || [];
   const coverFirst = sections[0]?.key === 'cover';
-  const stageMode = ready && data.theme?.navigationMode !== 'scroll';
+  const stageMode = ready && !editor && data.theme?.navigationMode !== 'scroll';
   const animations = data?.theme?.animations !== false;
   const stage = useStage({ sections, enabled: stageMode, animate: animations });
   const { goTo, goToKey, jump, next, prev } = stage;
@@ -174,14 +180,14 @@ export default function InvitationPage() {
   if (!data) return <>{null}{loader}</>;
 
   const name = data.site?.quinceaneraName;
-  const rootClass = ['xv', stageMode && 'xv--stage', !animations && 'no-anim', opened && 'is-opened', navVisible && 'has-nav'].filter(Boolean).join(' ');
+  const rootClass = ['xv', stageMode && 'xv--stage', editor && 'xv--editor', !animations && 'no-anim', opened && 'is-opened', navVisible && 'has-nav'].filter(Boolean).join(' ');
 
   return (
     <>
       <div id="top" ref={rootRef} className={rootClass} style={vars}>
         {stageMode
-          ? navVisible && <StageNav sections={sections} current={stage.target} onSelect={goTo} onPrev={prev} onNext={next} name={name} />
-          : <NavMenu sections={sections} name={name} visible={navVisible} />}
+          ? navVisible && <StageNav sections={sections} current={stage.target} onSelect={goTo} onPrev={prev} onNext={next} name={name} adminLabel={texts.adminLinkText} />
+          : !editor && <NavMenu sections={sections} name={name} visible={navVisible} adminLabel={texts.adminLinkText} />}
         {sections.map((section, index) => {
           const isCover = section.key === 'cover';
           const Component = COMPONENTS[section.key];
@@ -199,7 +205,14 @@ export default function InvitationPage() {
             </div>
           );
         })}
-        {data.music && <MusicPlayer ref={music} music={data.music} labels={{ play: texts.musicPlayLabel, pause: texts.musicPauseLabel }} />}
+        {data.music && (
+          <MusicPlayer
+            ref={music}
+            music={data.music}
+            allowAutoplay={!preview}
+            labels={{ play: texts.musicPlayLabel, pause: texts.musicPauseLabel, listen: texts.musicListenLabel }}
+          />
+        )}
       </div>
       {loader}
     </>

@@ -1,19 +1,83 @@
 // Convierte la configuración del tema (PostgreSQL) en variables CSS y carga las tipografías.
 import { cld } from './image.js';
 
+// ─── Paleta centralizada ─────────────────────────────────────────────────
+// Cada color del tema se publica como variable CSS. Las secciones pueden guardar
+// "theme:<clave>" en lugar de un color fijo, y así siguen a la paleta al cambiarla.
+
+export const PALETTE_VARS = {
+  primaryColor: '--c-primary',
+  secondaryColor: '--c-secondary',
+  accentColor: '--c-accent',
+  backgroundColor: '--c-bg',
+  sectionBackground: '--c-section',
+  cardBackground: '--c-card',
+  titleColor: '--c-title',
+  textColor: '--c-text',
+  textSecondaryColor: '--c-text-2',
+  buttonColor: '--c-btn',
+  buttonTextColor: '--c-btn-text',
+  buttonHoverColor: '--c-btn-hover',
+  borderColor: '--c-border',
+  iconColor: '--c-icon',
+  decorationColor: '--c-deco',
+  animationColor: '--c-glow',
+  navColor: '--c-nav',
+  footerColor: '--c-footer',
+};
+
+export const PALETTE_LABELS = {
+  primaryColor: 'Principal',
+  secondaryColor: 'Secundario',
+  accentColor: 'Acento',
+  backgroundColor: 'Fondo',
+  sectionBackground: 'Fondo alternativo',
+  cardBackground: 'Tarjetas',
+  titleColor: 'Títulos',
+  textColor: 'Texto',
+  textSecondaryColor: 'Texto secundario',
+  buttonColor: 'Botones',
+  buttonTextColor: 'Texto de botones',
+  buttonHoverColor: 'Botones (hover)',
+  borderColor: 'Bordes',
+  iconColor: 'Iconos',
+  decorationColor: 'Decoraciones',
+  animationColor: 'Animaciones y brillos',
+  navColor: 'Navegación',
+  footerColor: 'Footer',
+};
+
+// Solo se aceptan formatos de color seguros: nunca CSS arbitrario.
+const SAFE_COLOR = /^(#[0-9a-f]{3,8}|rgba?\(\s*[\d.\s,%]+\)|hsla?\(\s*[\d.\s,%deg]+\)|[a-z]{3,20})$/i;
+
+export function resolveColor(value, theme) {
+  if (!value || typeof value !== 'string') return undefined;
+  const v = value.trim();
+  if (v.startsWith('theme:')) {
+    const key = v.slice(6);
+    if (!PALETTE_VARS[key]) return undefined;
+    // Con el tema a mano se resuelve el valor real (útil para vistas previas en el panel).
+    return theme ? theme[key] || `var(${PALETTE_VARS[key]})` : `var(${PALETTE_VARS[key]})`;
+  }
+  return SAFE_COLOR.test(v) ? v : undefined;
+}
+
+// En la invitación los tokens se resuelven como variables CSS (cambian en vivo con la paleta).
+const cssColor = (value) => resolveColor(value);
+
 export function backgroundCss(bg, theme) {
   if (!bg) return undefined;
   switch (bg.type) {
     case 'solid':
-      return bg.color || undefined;
+      return cssColor(bg.color);
     case 'gradient':
-      return `linear-gradient(${Number(bg.angle ?? 180)}deg, ${bg.from || 'transparent'}, ${bg.to || 'transparent'})`;
+      return `linear-gradient(${Number(bg.angle ?? 180) || 0}deg, ${cssColor(bg.from) || 'transparent'}, ${cssColor(bg.to) || 'transparent'})`;
     case 'image':
-      return bg.imageUrl ? `url("${cld(bg.imageUrl, { w: 2000 })}") center / cover no-repeat` : bg.color || undefined;
+      return bg.imageUrl && /^https:\/\//.test(bg.imageUrl) ? `url("${cld(bg.imageUrl, { w: 2000 })}") center / cover no-repeat` : cssColor(bg.color);
     case 'section':
-      return theme?.sectionBackground;
+      return theme ? 'var(--c-section)' : undefined;
     case 'footer':
-      return theme?.footerColor;
+      return theme ? 'var(--c-footer)' : undefined;
     default:
       return undefined;
   }
@@ -23,23 +87,22 @@ export function themeVars(theme) {
   if (!theme) return {};
   const px = (v, fallback) => `${Number(v ?? fallback)}px`;
   const size = (obj, key, fallback) => px(obj?.[key], fallback);
+  const vars = {};
+  for (const [key, cssVar] of Object.entries(PALETTE_VARS)) vars[cssVar] = resolveColor(theme[key]) || undefined;
+  // Colores nuevos con respaldo para temas antiguos
+  vars['--c-title'] = vars['--c-title'] || 'var(--c-primary)';
+  vars['--c-deco'] = vars['--c-deco'] || 'var(--c-primary)';
+  vars['--c-glow'] = vars['--c-glow'] || 'var(--c-accent)';
   return {
-    '--c-primary': theme.primaryColor,
-    '--c-secondary': theme.secondaryColor,
-    '--c-accent': theme.accentColor,
-    '--c-text': theme.textColor,
-    '--c-text-2': theme.textSecondaryColor,
-    '--c-bg': theme.backgroundColor,
-    '--c-section': theme.sectionBackground,
-    '--c-card': theme.cardBackground,
-    '--c-btn': theme.buttonColor,
-    '--c-btn-text': theme.buttonTextColor,
-    '--c-btn-hover': theme.buttonHoverColor,
-    '--c-border': theme.borderColor,
-    '--c-icon': theme.iconColor,
-    '--c-nav': theme.navColor,
-    '--c-footer': theme.footerColor,
-    '--page-bg': backgroundCss(theme.pageBackground, theme) || theme.backgroundColor,
+    ...vars,
+    // Alias legibles para cualquier componente
+    '--color-primary': 'var(--c-primary)',
+    '--color-secondary': 'var(--c-secondary)',
+    '--color-accent': 'var(--c-accent)',
+    '--color-animation': 'var(--c-glow)',
+    '--color-glow': 'color-mix(in srgb, var(--c-glow) 55%, transparent)',
+    '--color-danger': 'color-mix(in srgb, #c0394f 85%, var(--c-primary))',
+    '--page-bg': backgroundCss(theme.pageBackground, theme) || 'var(--c-bg)',
     '--f-title': fontStack(theme.fontTitle, 'serif'),
     '--f-script': fontStack(theme.fontScript, 'cursive'),
     '--f-subtitle': fontStack(theme.fontSubtitle, 'serif'),

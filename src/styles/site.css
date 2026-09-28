@@ -7,15 +7,15 @@
   --fs-script: var(--fs-script-m, 62px);
   --space: var(--space-m, 70px);
   --gutter: 20px;
-  --shadow: 0 18px 50px -24px color-mix(in srgb, var(--c-primary, #b76e79) 45%, transparent);
-  --shadow-soft: 0 10px 30px -18px color-mix(in srgb, var(--c-text, #4a3b40) 40%, transparent);
+  --shadow: 0 18px 50px -24px color-mix(in srgb, var(--c-primary) 45%, transparent);
+  --shadow-soft: 0 10px 30px -18px color-mix(in srgb, var(--c-text) 40%, transparent);
 
   position: relative;
   width: 100%;
   min-height: 100vh;
-  background: var(--page-bg, var(--c-bg, #fdf8f6));
+  background: var(--page-bg, var(--c-bg));
   background-attachment: fixed;
-  color: var(--c-text, #4a3b40);
+  color: var(--c-text);
   font-family: var(--f-body, sans-serif);
   font-size: var(--fs-base);
   line-height: 1.7;
@@ -105,7 +105,7 @@
   font-weight: 500;
   font-size: var(--fs-title);
   line-height: 1.1;
-  color: var(--s-title, var(--c-primary));
+  color: var(--s-title, var(--c-title));
   overflow-wrap: anywhere;
 }
 
@@ -143,7 +143,7 @@
   position: absolute;
   width: clamp(120px, 22vw, 240px);
   height: auto;
-  color: var(--s-accent, var(--c-accent));
+  color: var(--s-accent, var(--c-deco));
   opacity: 0.28;
   pointer-events: none;
   z-index: -1;
@@ -200,7 +200,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.35) 50%, transparent 70%);
+  background: linear-gradient(110deg, transparent 30%, color-mix(in srgb, var(--c-btn-text) 35%, transparent) 50%, transparent 70%);
   transform: translateX(-120%);
   transition: transform 0.8s ease;
 }
@@ -319,8 +319,8 @@ textarea.input {
   margin: 0 0 14px;
   padding: 10px 14px;
   border-radius: 10px;
-  background: #fdecef;
-  color: #a2394d;
+  background: color-mix(in srgb, var(--color-danger) 10%, var(--c-card));
+  color: var(--color-danger);
   font-size: 0.92em;
   text-align: left;
 }
@@ -401,16 +401,16 @@ textarea.input {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.1) 40%, rgba(0, 0, 0, 0.55));
+  background: linear-gradient(180deg, color-mix(in srgb, var(--c-text) 30%, transparent), color-mix(in srgb, var(--c-text) 10%, transparent) 40%, color-mix(in srgb, var(--c-text) 60%, transparent));
 }
 
 .cover--centered .cover__fullphoto ~ .cover__inner {
-  color: #fff;
+  color: var(--c-card);
 }
 
 .cover--centered .cover__fullphoto ~ .cover__inner .cover__name {
-  color: #fff;
-  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.35);
+  color: var(--c-card);
+  text-shadow: 0 4px 30px color-mix(in srgb, var(--c-text) 40%, transparent);
 }
 
 .cover__inner {
@@ -470,7 +470,7 @@ textarea.input {
   top: 0;
   bottom: 0;
   width: 40%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--c-card) 45%, transparent), transparent);
   animation: shineSweep 6s ease-in-out 2s infinite;
 }
 
@@ -525,14 +525,14 @@ textarea.input {
   font-weight: 400;
   font-size: var(--fs-script);
   line-height: 1.15;
-  color: var(--s-title, var(--c-primary));
+  color: var(--s-title, var(--c-title));
   overflow-wrap: anywhere;
   animation: revealText 1.8s cubic-bezier(0.22, 0.8, 0.26, 1) 0.9s both;
   padding: 0 0.15em;
 }
 
 .cover__name span {
-  background: linear-gradient(100deg, currentColor 40%, color-mix(in srgb, var(--c-accent) 80%, #fff) 50%, currentColor 60%);
+  background: linear-gradient(100deg, currentColor 40%, color-mix(in srgb, var(--c-glow) 80%, var(--c-card)) 50%, currentColor 60%);
   background-size: 250% 100%;
   -webkit-background-clip: text;
   background-clip: text;
@@ -626,7 +626,7 @@ textarea.input {
   top: 0;
   width: 18px;
   height: 18px;
-  color: color-mix(in srgb, var(--c-primary) 55%, var(--c-secondary));
+  color: var(--c-deco);
   --petal-opacity: 0.75;
   animation: flowerFloat 16s linear infinite;
   will-change: transform;
@@ -639,14 +639,14 @@ textarea.input {
 
 .petals__item:nth-child(1) { left: 4%; animation-duration: 17s; animation-delay: -2s; --drift: 60px; }
 .petals__item:nth-child(2) { left: 14%; width: 12px; height: 12px; animation-duration: 21s; animation-delay: -9s; --drift: -30px; }
-.petals__item:nth-child(3) { left: 24%; animation-duration: 15s; animation-delay: -5s; --drift: 40px; color: var(--c-accent); --petal-opacity: 0.5; }
+.petals__item:nth-child(3) { left: 24%; animation-duration: 15s; animation-delay: -5s; --drift: 40px; color: var(--c-glow); --petal-opacity: 0.5; }
 .petals__item:nth-child(4) { left: 33%; width: 22px; height: 22px; animation-duration: 19s; animation-delay: -13s; --drift: -50px; }
 .petals__item:nth-child(5) { left: 44%; width: 14px; height: 14px; animation-duration: 23s; animation-delay: -1s; --drift: 70px; }
-.petals__item:nth-child(6) { left: 53%; animation-duration: 18s; animation-delay: -15s; --drift: -40px; color: var(--c-accent); --petal-opacity: 0.5; }
+.petals__item:nth-child(6) { left: 53%; animation-duration: 18s; animation-delay: -15s; --drift: -40px; color: var(--c-glow); --petal-opacity: 0.5; }
 .petals__item:nth-child(7) { left: 62%; width: 11px; height: 11px; animation-duration: 20s; animation-delay: -7s; --drift: 30px; }
 .petals__item:nth-child(8) { left: 71%; width: 20px; height: 20px; animation-duration: 16s; animation-delay: -11s; --drift: -60px; }
 .petals__item:nth-child(9) { left: 80%; animation-duration: 22s; animation-delay: -3s; --drift: 45px; }
-.petals__item:nth-child(10) { left: 88%; width: 13px; height: 13px; animation-duration: 17s; animation-delay: -14s; --drift: -35px; color: var(--c-accent); --petal-opacity: 0.5; }
+.petals__item:nth-child(10) { left: 88%; width: 13px; height: 13px; animation-duration: 17s; animation-delay: -14s; --drift: -35px; color: var(--c-glow); --petal-opacity: 0.5; }
 .petals__item:nth-child(11) { left: 94%; animation-duration: 24s; animation-delay: -6s; --drift: -70px; }
 .petals__item:nth-child(12) { left: 9%; width: 16px; height: 16px; animation-duration: 25s; animation-delay: -18s; --drift: 55px; }
 .petals__item:nth-child(13) { left: 38%; width: 10px; height: 10px; animation-duration: 19s; animation-delay: -16s; --drift: 25px; }
@@ -665,13 +665,13 @@ textarea.input {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: var(--c-accent);
-  box-shadow: 0 0 10px 2px color-mix(in srgb, var(--c-accent) 60%, transparent);
+  background: var(--c-glow);
+  box-shadow: 0 0 10px 2px var(--color-glow);
   animation: twinkle 4s ease-in-out infinite;
 }
 
 .sparkles__dot:nth-child(3n) { width: 3px; height: 3px; animation-duration: 5s; }
-.sparkles__dot:nth-child(4n) { background: #fff; animation-duration: 3.4s; }
+.sparkles__dot:nth-child(4n) { background: var(--c-card); animation-duration: 3.4s; }
 .sparkles__dot:nth-child(1) { top: 12%; left: 8%; animation-delay: -0.4s; }
 .sparkles__dot:nth-child(2) { top: 22%; left: 86%; animation-delay: -1.2s; }
 .sparkles__dot:nth-child(3) { top: 34%; left: 18%; animation-delay: -2.4s; }
@@ -889,7 +889,7 @@ textarea.input {
   font-size: clamp(1.9em, 7vw, 3.6em);
   line-height: 1;
   font-variant-numeric: tabular-nums;
-  color: var(--s-title, var(--c-primary));
+  color: var(--s-title, var(--c-title));
   animation: tick 0.5s ease both;
 }
 
@@ -904,7 +904,7 @@ textarea.input {
   font-family: var(--f-script);
   font-size: clamp(2.2em, 7vw, 3.4em);
   margin: 0;
-  color: var(--s-title, var(--c-primary));
+  color: var(--s-title, var(--c-title));
 }
 
 /* ─── Calendario ────────────────────────────────────────────────────────── */
@@ -920,7 +920,7 @@ textarea.input {
   font-family: var(--f-title);
   font-size: 1.6em;
   text-transform: capitalize;
-  color: var(--s-title, var(--c-primary));
+  color: var(--s-title, var(--c-title));
 }
 
 .calendar__month span {
@@ -1051,7 +1051,7 @@ textarea.input {
   font-family: var(--f-title);
   font-size: clamp(1.4em, 3.6vw, 1.9em);
   line-height: 1.25;
-  color: var(--s-title, var(--c-primary));
+  color: var(--s-title, var(--c-title));
   overflow-wrap: anywhere;
 }
 
@@ -1343,7 +1343,7 @@ textarea.input {
   font-family: var(--f-title);
   font-size: clamp(1.4em, 3.4vw, 1.8em);
   font-weight: 500;
-  color: var(--s-title, var(--c-primary));
+  color: var(--s-title, var(--c-title));
 }
 
 .story__desc {
@@ -1404,8 +1404,8 @@ textarea.input {
   right: 0;
   bottom: 0;
   padding: 26px 12px 10px;
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.55));
-  color: #fff;
+  background: linear-gradient(transparent, color-mix(in srgb, var(--c-text) 65%, transparent));
+  color: var(--c-card);
   font-size: 0.8em;
   text-align: left;
   opacity: 0;
@@ -1548,7 +1548,7 @@ textarea.input {
   display: grid;
   place-items: center;
   padding: 56px 12px;
-  background: rgba(20, 12, 16, 0.92);
+  background: color-mix(in srgb, var(--c-footer) 94%, transparent);
   animation: fadeIn 0.3s ease both;
 }
 
@@ -1572,7 +1572,7 @@ textarea.input {
 }
 
 .lightbox figcaption {
-  color: #f5e9ec;
+  color: var(--c-secondary);
   text-align: center;
   display: grid;
   gap: 2px;
@@ -1598,15 +1598,15 @@ textarea.input {
   height: 46px;
   border-radius: 50%;
   border: 0;
-  background: rgba(255, 255, 255, 0.12);
-  color: #fff;
+  background: color-mix(in srgb, var(--c-card) 14%, transparent);
+  color: var(--c-card);
   transition: background 0.3s;
   z-index: 2;
 }
 
 .lightbox__close:hover,
 .lightbox__nav:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: color-mix(in srgb, var(--c-card) 28%, transparent);
 }
 
 .lightbox__close {
@@ -1745,7 +1745,7 @@ textarea.input {
 .choice__opt--no.is-checked {
   background: var(--c-text-2);
   border-color: var(--c-text-2);
-  color: #fff;
+  color: var(--c-btn-text);
 }
 
 .choice__opt.is-checked .icon {
@@ -1885,7 +1885,7 @@ textarea.input {
   font-family: var(--f-script);
   font-size: clamp(2.6em, 8vw, 4em);
   line-height: 1.2;
-  color: var(--s-title, #fff);
+  color: var(--s-title, var(--c-card));
 }
 
 .footer__text {
@@ -1952,7 +1952,7 @@ textarea.input {
   position: absolute;
   inset: 4px;
   border-radius: 50%;
-  border: 1px dashed rgba(255, 255, 255, 0.55);
+  border: 1px dashed color-mix(in srgb, var(--c-btn-text) 55%, transparent);
   animation: rotateSlow 6s linear infinite;
   animation-play-state: paused;
 }

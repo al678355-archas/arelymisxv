@@ -5,7 +5,9 @@ import { ToastProvider, ConfirmProvider, Loading } from './components/ui.jsx';
 import Layout from './Layout.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import DashboardPage from './pages/DashboardPage.jsx';
+import { PaletteProvider } from './palette.jsx';
 import '../styles/admin.css';
+import '../styles/admin-v2.css';
 
 const InvitationSettingsPage = lazy(() => import('./pages/InvitationSettingsPage.jsx'));
 const DesignPage = lazy(() => import('./pages/DesignPage.jsx'));
@@ -22,6 +24,10 @@ const GalleryPage = lazy(() => import('./pages/GalleryPage.jsx'));
 const DedicationsPage = lazy(() => import('./pages/DedicationsPage.jsx'));
 const QrPage = lazy(() => import('./pages/QrPage.jsx'));
 const SettingsPage = lazy(() => import('./pages/SettingsPage.jsx'));
+const VisualEditorPage = lazy(() => import('./pages/VisualEditorPage.jsx'));
+const PalettesPage = lazy(() => import('./pages/PalettesPage.jsx'));
+const AdministratorsPage = lazy(() => import('./pages/AdministratorsPage.jsx'));
+const ActivityPage = lazy(() => import('./pages/ActivityPage.jsx'));
 
 const AuthContext = createContext(null);
 export const useAuth = () => useContext(AuthContext);
@@ -76,6 +82,7 @@ export default function AdminApp() {
   return (
     <AuthProvider>
       <ToastProvider>
+        <PaletteProvider>
         <ConfirmProvider>
           <Routes>
             <Route path="login" element={<LoginPage />} />
@@ -87,7 +94,11 @@ export default function AdminApp() {
                     <Suspense fallback={<Loading />}>
                       <Routes>
                         <Route index element={<DashboardPage />} />
-                        <Route path="invitacion" element={<InvitationSettingsPage />} />
+                        <Route path="invitacion" element={<VisualEditorPage />} />
+                        <Route path="evento" element={<InvitationSettingsPage />} />
+                        <Route path="paletas" element={<PalettesPage />} />
+                        <Route path="administrators" element={<AdministratorsPage />} />
+                        <Route path="actividad" element={<ActivityPage />} />
                         <Route path="diseno" element={<DesignPage />} />
                         <Route path="secciones" element={<SectionsPage />} />
                         <Route path="secciones/:id" element={<SectionEditorPage />} />
@@ -112,6 +123,7 @@ export default function AdminApp() {
             />
           </Routes>
         </ConfirmProvider>
+        </PaletteProvider>
       </ToastProvider>
     </AuthProvider>
   );

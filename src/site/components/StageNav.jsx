@@ -7,7 +7,7 @@ export function navLabel(section, siteName) {
 }
 
 // Menú siempre visible (barra superior con todas las secciones) + panel completo + controles anterior/siguiente.
-export default function StageNav({ sections, current, onSelect, onPrev, onNext, name }) {
+export default function StageNav({ sections, current, onSelect, onPrev, onNext, name, adminLabel }) {
   const [open, setOpen] = useState(false);
   const listRef = useRef(null);
 
@@ -68,6 +68,14 @@ export default function StageNav({ sections, current, onSelect, onPrev, onNext, 
               </button>
             </li>
           ))}
+          {adminLabel && (
+            <li className="stage-panel__admin" style={{ '--i': sections.length }}>
+              <a href="/admin/login">
+                <Icon name="lock" size={15} />
+                <span>{adminLabel}</span>
+              </a>
+            </li>
+          )}
         </ol>
       </div>
 

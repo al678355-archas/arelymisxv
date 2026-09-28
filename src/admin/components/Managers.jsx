@@ -88,8 +88,12 @@ export function VenueFields({ prefix, draft, set, image, onImage }) {
 }
 
 // Editor de una sola sede (dentro del editor de la sección Ceremonia/Recepción).
-export function VenueEditor({ prefix }) {
+export function VenueEditor({ prefix, onDraft }) {
   const { draft, setDraft, images, setImages, error, reload, autosave } = useEventDraft();
+  // Vista previa instantánea en el editor visual
+  useEffect(() => {
+    if (draft && onDraft) onDraft({ ...draft, ceremonyImage: images.ceremony || null, receptionImage: images.reception || null });
+  }, [draft, images, onDraft]);
   if (error) return <ErrorBox error={error} onRetry={reload} />;
   if (!draft) return <Loading />;
   return (

@@ -1,7 +1,6 @@
 import { cld, srcSet } from '../../lib/image.js';
 import { coverDate } from '../../lib/format.js';
-import { sectionStyleVars } from '../components/SectionShell.jsx';
-import { backgroundCss } from '../../lib/theme.js';
+import { sectionStyleVars, sectionClasses, SectionBackground } from '../components/SectionShell.jsx';
 import { Petals, Sparkles } from '../components/Decorations.jsx';
 import Icon from '../components/Icon.jsx';
 
@@ -18,15 +17,11 @@ export default function Cover({ section, data, opened, onOpen, onNext }) {
   return (
     <section
       id="s-cover"
-      className={`cover cover--${layout} cover--${content.photoShape || 'arch'} ${opened ? 'is-opened' : ''}`}
+      className={`cover cover--${layout} cover--${content.photoShape || 'arch'} ${sectionClasses(style)} ${opened ? 'is-opened' : ''}`}
       style={sectionStyleVars(style, theme)}
       data-section="cover"
     >
-      {bg?.type === 'image' && bg.imageUrl && (
-        <div className="xv-section__bgimg cover__bgimg" style={{ background: backgroundCss(bg, theme) }} aria-hidden="true">
-          {Number(bg.overlay) > 0 && <span className="xv-section__overlay" style={{ opacity: Number(bg.overlay), background: bg.overlayColor || '#000' }} />}
-        </div>
-      )}
+      <SectionBackground bg={bg} theme={theme} />
       {layout === 'centered' && photo?.url && (
         <div className="cover__fullphoto" aria-hidden="true">
           <img src={cld(photo.url, { w: 1600 })} srcSet={srcSet(photo.url, 2000)} sizes="100vw" alt="" fetchpriority="high" />

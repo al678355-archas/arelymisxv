@@ -3,26 +3,30 @@ import { NavLink, useLocation } from 'react-router-dom';
 import { useAuth } from './AdminApp.jsx';
 import { Icon } from './components/ui.jsx';
 import { subscribe, isLiveConnected } from '../lib/live.js';
+import { usePalette } from './palette.jsx';
 
 export const NAV = [
   { to: '/admin', label: 'Dashboard', icon: 'grid', end: true },
-  { to: '/admin/invitacion', label: 'Invitación', icon: 'heart' },
-  { to: '/admin/diseno', label: 'Diseño', icon: 'palette' },
+  { group: 'Invitación' },
+  { to: '/admin/invitacion', label: 'Editor visual', icon: 'edit' },
   { to: '/admin/secciones', label: 'Secciones', icon: 'layers' },
+  { to: '/admin/evento', label: 'Datos del evento', icon: 'calendar' },
+  { to: '/admin/diseno', label: 'Diseño', icon: 'type' },
+  { to: '/admin/paletas', label: 'Paletas', icon: 'palette' },
   { to: '/admin/multimedia', label: 'Multimedia', icon: 'image' },
   { to: '/admin/musica', label: 'Música', icon: 'music' },
-  { to: '/admin/itinerario', label: 'Itinerario', icon: 'list' },
-  { group: 'Invitados' },
-  { to: '/admin/invitados', label: 'Invitados', icon: 'users' },
-  { to: '/admin/familias', label: 'Familias', icon: 'home' },
-  { to: '/admin/confirmaciones', label: 'Confirmaciones', icon: 'check' },
-  { to: '/admin/padrinos', label: 'Padrinos / Apoyos', icon: 'handshake' },
-  { group: 'Interacción' },
-  { to: '/admin/galeria-recuerdos', label: 'Galería recuerdos', icon: 'camera' },
-  { to: '/admin/galeria-fiesta', label: 'Galería fiesta', icon: 'party' },
+  { to: '/admin/itinerario', label: 'Itinerario e historia', icon: 'list' },
+  { to: '/admin/galeria-recuerdos', label: 'Galerías', icon: 'camera', also: ['/admin/galeria-fiesta'] },
   { to: '/admin/dedicatorias', label: 'Dedicatorias', icon: 'message' },
-  { to: '/admin/qr', label: 'QR', icon: 'qr' },
+  { to: '/admin/qr', label: 'QR de fotos', icon: 'qr' },
+  { group: 'Invitados' },
+  { to: '/admin/familias', label: 'Familias', icon: 'home' },
+  { to: '/admin/invitados', label: 'Invitados', icon: 'users' },
+  { to: '/admin/confirmaciones', label: 'Confirmaciones', icon: 'check' },
+  { to: '/admin/padrinos', label: 'Padrinos y apoyos', icon: 'star' },
   { group: 'Sistema' },
+  { to: '/admin/administrators', label: 'Administradores', icon: 'lock' },
+  { to: '/admin/actividad', label: 'Actividad', icon: 'activity' },
   { to: '/admin/configuracion', label: 'Configuración', icon: 'settings' },
 ];
 
@@ -41,6 +45,8 @@ export default function Layout({ children }) {
   const { admin, logout } = useAuth();
   const [open, setOpen] = useState(false);
   const location = useLocation();
+  const { refresh: refreshPalette } = usePalette();
+  useEffect(() => refreshPalette(), [refreshPalette]);
 
   useEffect(() => setOpen(false), [location.pathname]);
 
@@ -61,7 +67,7 @@ export default function Layout({ children }) {
                 {item.group}
               </p>
             ) : (
-              <NavLink key={item.to} to={item.to} end={item.end} className={({ isActive }) => `a-nav-link ${isActive ? 'is-active' : ''}`}>
+              <NavLink key={item.to} to={item.to} end={item.end} className={({ isActive }) => `a-nav-link ${isActive || item.also?.includes(location.pathname) ? 'is-active' : ''}`}>
                 <Icon name={item.icon} size={18} />
                 <span>{item.label}</span>
               </NavLink>

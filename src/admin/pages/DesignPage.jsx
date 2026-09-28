@@ -1,29 +1,12 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { api } from '../../lib/api.js';
 import { useApi } from '../hooks.js';
 import { useAutosave } from '../../hooks/useAutosave.js';
-import { FONT_OPTIONS, loadGoogleFonts } from '../../lib/theme.js';
-import { ColorField, BackgroundField } from '../components/ColorFields.jsx';
+import { FONT_OPTIONS, loadGoogleFonts, PALETTE_LABELS } from '../../lib/theme.js';
+import { BackgroundField } from '../components/ColorFields.jsx';
 import PreviewFrame from '../components/PreviewFrame.jsx';
-import { Card, ErrorBox, Field, Input, Loading, PageHeader, SaveStatus, Toggle } from '../components/ui.jsx';
-
-const COLORS = [
-  ['primaryColor', 'Color primario', 'Títulos, nombre y detalles principales'],
-  ['secondaryColor', 'Color secundario', 'Fondos suaves y degradados'],
-  ['accentColor', 'Color de acento', 'Antetítulos, adornos y destellos'],
-  ['textColor', 'Color del texto'],
-  ['textSecondaryColor', 'Texto secundario'],
-  ['backgroundColor', 'Fondo principal (color base)'],
-  ['sectionBackground', 'Fondo de secciones'],
-  ['cardBackground', 'Fondo de tarjetas'],
-  ['buttonColor', 'Color de botones'],
-  ['buttonTextColor', 'Texto de botones'],
-  ['buttonHoverColor', 'Color hover de botones'],
-  ['borderColor', 'Color de bordes'],
-  ['iconColor', 'Color de iconos'],
-  ['navColor', 'Color de navegación'],
-  ['footerColor', 'Color del footer'],
-];
+import { Card, ErrorBox, Field, Icon, Input, Loading, PageHeader, SaveStatus, Toggle } from '../components/ui.jsx';
 
 const FONTS = [
   ['fontTitle', 'Fuente de títulos', 'serif'],
@@ -77,8 +60,9 @@ export default function DesignPage() {
 
   useEffect(() => {
     if (data?.theme && !draft) {
-      const { id, updatedAt, ...rest } = data.theme;
-      setDraft(rest);
+      // Los colores se editan en Paletas: aquí no se envían para no pisar cambios de paleta.
+      const { id, updatedAt, originalPalette, ...rest } = data.theme;
+      setDraft(Object.fromEntries(Object.entries(rest).filter(([k]) => !(k in PALETTE_LABELS))));
     }
   }, [data, draft]);
 
@@ -91,7 +75,7 @@ export default function DesignPage() {
   return (
     <div className="a-page a-page--with-preview">
       <div className="a-page__main">
-        <PageHeader title="Diseño" description="Colores, fondos, tipografías y tamaños de toda la invitación." actions={<SaveStatus status={autosave.status} error={autosave.error} />} />
+        <PageHeader title="Diseño" description="Navegación, fondo general, tipografías, tamaños y efectos de toda la invitación." actions={<SaveStatus status={autosave.status} error={autosave.error} />} />
 
         <Card title="Navegación de la invitación" description="Cómo recorren los invitados las secciones.">
           <div className="a-choice-cards">
@@ -107,13 +91,14 @@ export default function DesignPage() {
           </div>
         </Card>
 
-        <Card title="Colores">
-          <div className="a-grid a-grid--colors">
-            {COLORS.map(([key, label, hint]) => (
-              <ColorField key={key} label={label} hint={hint} value={draft[key]} onChange={(v) => set({ [key]: v })} />
-            ))}
-          </div>
-        </Card>
+        <Link to="/admin/paletas" className="a-shortcut a-shortcut--wide">
+          <Icon name="palette" size={22} />
+          <span>
+            <strong>Colores y paletas</strong>
+            <small>Paleta actual, paletas predeterminadas, paletas personalizadas y restaurar colores originales.</small>
+          </span>
+          <Icon name="chevronRight" size={18} />
+        </Link>
 
         <Card title="Fondo principal de la página" description="Color sólido, degradado o imagen detrás de todas las secciones.">
           <BackgroundField value={draft.pageBackground} onChange={(pageBackground) => set({ pageBackground })} themeOptions={false} theme={draft} />

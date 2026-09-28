@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Icon from './Icon.jsx';
 
 // Menú flotante con accesos a las secciones (usa el título editable de cada sección).
-export default function NavMenu({ sections, name, visible }) {
+export default function NavMenu({ sections, name, visible, adminLabel }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -40,6 +40,13 @@ export default function NavMenu({ sections, name, visible }) {
               <a href={`#s-${s.key}`}>{s.content.title}</a>
             </li>
           ))}
+          {adminLabel && (
+            <li className="nav-panel__admin" style={{ '--i': links.length }}>
+              <a href="/admin/login">
+                <Icon name="lock" size={15} /> {adminLabel}
+              </a>
+            </li>
+          )}
         </ul>
       </div>
     </>

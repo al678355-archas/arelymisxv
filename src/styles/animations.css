@@ -46,7 +46,7 @@
 }
 
 @keyframes softPulse {
-  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--c-btn, #b76e79) 45%, transparent); }
+  0%, 100% { box-shadow: 0 0 0 0 var(--color-glow, color-mix(in srgb, var(--c-btn) 45%, transparent)); }
   50% { box-shadow: 0 0 0 14px transparent; }
 }
 

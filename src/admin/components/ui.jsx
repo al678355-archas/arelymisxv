@@ -201,14 +201,58 @@ export function Modal({ open, title, onClose, children, footer, wide }) {
   );
 }
 
-export function Loading({ label = 'Cargando…' }) {
+// Pequeña flor que se construye pétalo a pétalo (colores del panel).
+export function Bloom({ size = 44 }) {
+  return (
+    <span className="a-bloom" style={{ '--size': `${size}px` }} aria-hidden="true">
+      {Array.from({ length: 6 }, (_, i) => (
+        <i key={i} style={{ '--i': i }} />
+      ))}
+      <b />
+    </span>
+  );
+}
+
+export function Loading({ label = 'Cargando…', skeleton }) {
+  if (skeleton) return <Skeleton rows={skeleton} />;
   return (
     <div className="a-loading" role="status">
-      <span className="a-spinner a-spinner--lg" aria-hidden="true" />
+      <Bloom />
       <span>{label}</span>
     </div>
   );
 }
+
+export function Skeleton({ rows = 3, card = true }) {
+  return (
+    <div className={`a-skeleton ${card ? 'a-skeleton--card' : ''}`} role="status" aria-label="Cargando">
+      {Array.from({ length: rows }, (_, i) => (
+        <span key={i} className="a-skeleton__row" style={{ '--w': `${92 - ((i * 17) % 40)}%` }} />
+      ))}
+    </div>
+  );
+}
+
+export function ProgressBar({ value, label, tone = 'rose', hint, compact }) {
+  const v = value === null || value === undefined ? null : Math.max(0, Math.min(100, value));
+  return (
+    <div className={`a-progress-row ${compact ? 'is-compact' : ''}`}>
+      {label && (
+        <div className="a-progress-row__head">
+          <span>{label}</span>
+          <strong>{v === null ? '—' : `${v}%`}</strong>
+        </div>
+      )}
+      <div className={`a-progress-bar a-progress-bar--${tone}`} role="progressbar" aria-valuenow={v ?? 0} aria-valuemin={0} aria-valuemax={100} aria-label={label}>
+        <span style={{ width: `${v ?? 0}%` }} />
+      </div>
+      {hint && <small className="a-muted">{hint}</small>}
+    </div>
+  );
+}
+
+export const money = (value) =>
+  new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN', maximumFractionDigits: 2 }).format(Number(value) || 0);
 
 export function ErrorBox({ error, onRetry }) {
   if (!error) return null;

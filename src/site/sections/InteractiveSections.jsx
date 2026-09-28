@@ -375,6 +375,12 @@ export function Footer({ section, data }) {
             {content.credits}
           </p>
         )}
+        {data.site?.texts?.adminLinkText && (
+          <a className="footer__admin" href="/admin/login">
+            <Icon name="lock" size={13} />
+            <span>{data.site.texts.adminLinkText}</span>
+          </a>
+        )}
       </footer>
     </SectionShell>
   );

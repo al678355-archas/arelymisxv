@@ -61,6 +61,6 @@ a {
 
 
 :focus-visible {
-  outline: 2px solid #b76e79;
+  outline: 2px solid var(--c-primary, currentColor);
   outline-offset: 3px;
 }
