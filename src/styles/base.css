@@ -59,32 +59,6 @@ a {
   border: 0;
 }
 
-.app-loader {
-  min-height: 100vh;
-  min-height: 100dvh;
-  display: grid;
-  place-items: center;
-  padding: 24px;
-  text-align: center;
-  background: #fdf8f6;
-}
-
-.app-loader__ring {
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  border: 2px solid rgba(183, 110, 121, 0.2);
-  border-top-color: #b76e79;
-  animation: rotateSlow 0.9s linear infinite;
-}
-
-.app-loader__error {
-  display: grid;
-  gap: 16px;
-  justify-items: center;
-  max-width: 420px;
-  color: #6b5359;
-}
 
 :focus-visible {
   outline: 2px solid #b76e79;

@@ -9,6 +9,7 @@ import { Calendar, Venue, Itinerary, DressCode, Story } from './sections/EventSe
 import { Gallery, Rsvp, Dedications, Footer } from './sections/InteractiveSections.jsx';
 import MusicPlayer from './components/MusicPlayer.jsx';
 import NavMenu from './components/NavMenu.jsx';
+import Loader, { rememberLoaderLook } from '../components/Loader.jsx';
 import '../styles/site.css';
 
 const COMPONENTS = {
@@ -54,6 +55,9 @@ export function useSiteTheme(data) {
   useEffect(() => {
     if (data) applyFavicon(faviconSrc);
   }, [data, faviconSrc]);
+  useEffect(() => {
+    if (data) rememberLoaderLook(data);
+  }, [data]);
   return vars;
 }
 
@@ -64,6 +68,15 @@ export default function InvitationPage() {
   const rootRef = useRef(null);
   const music = useRef(null);
   const vars = useSiteTheme(data);
+  const [loaderGone, setLoaderGone] = useState(false);
+  const ready = Boolean(data);
+
+  // La pantalla de carga se desvanece sobre la invitación ya lista y luego se retira.
+  useEffect(() => {
+    if (!ready) return undefined;
+    const t = setTimeout(() => setLoaderGone(true), 900);
+    return () => clearTimeout(t);
+  }, [ready]);
 
   useReveal(rootRef, [Boolean(data)]);
 
@@ -96,42 +109,31 @@ export default function InvitationPage() {
     }, 900);
   }
 
-  if (!data) {
-    return (
-      <div className="app-loader" role="status" aria-live="polite">
-        {error ? (
-          <div className="app-loader__error">
-            <p>{error.message}</p>
-            <button type="button" className="btn" onClick={reload}>
-              Reintentar
-            </button>
-          </div>
-        ) : (
-          <span className="app-loader__ring" />
-        )}
-      </div>
-    );
-  }
-
-  const animations = data.theme?.animations !== false;
-  const texts = data.site?.texts || {};
+  const animations = data?.theme?.animations !== false;
+  const texts = data?.site?.texts || {};
+  // Mismo lugar en el árbol antes y después de cargar: así el loader se desvanece con transición.
+  const loader = !loaderGone && <Loader done={ready} error={ready ? null : error} onRetry={reload} />;
+  if (!data) return <>{null}{loader}</>;
 
   return (
-    <div id="top" ref={rootRef} className={`xv ${animations ? '' : 'no-anim'} ${opened ? 'is-opened' : ''}`} style={vars}>
-      <NavMenu sections={sections} name={data.site?.quinceaneraName} visible={opened || !coverFirst} />
-      {sections.map((section, index) => {
-        if (section.key === 'cover') {
-          return (
-            <Fragment key={section.id}>
-              <Cover section={section} data={data} opened={opened || index !== 0} onOpen={open} />
-              <div id="after-cover" />
-            </Fragment>
-          );
-        }
-        const Component = COMPONENTS[section.key];
-        return Component ? <Component key={section.id} section={section} data={data} /> : null;
-      })}
-      {data.music && <MusicPlayer ref={music} music={data.music} labels={{ play: texts.musicPlayLabel, pause: texts.musicPauseLabel }} />}
-    </div>
+    <>
+      <div id="top" ref={rootRef} className={`xv ${animations ? '' : 'no-anim'} ${opened ? 'is-opened' : ''}`} style={vars}>
+        <NavMenu sections={sections} name={data.site?.quinceaneraName} visible={opened || !coverFirst} />
+        {sections.map((section, index) => {
+          if (section.key === 'cover') {
+            return (
+              <Fragment key={section.id}>
+                <Cover section={section} data={data} opened={opened || index !== 0} onOpen={open} />
+                <div id="after-cover" />
+              </Fragment>
+            );
+          }
+          const Component = COMPONENTS[section.key];
+          return Component ? <Component key={section.id} section={section} data={data} /> : null;
+        })}
+        {data.music && <MusicPlayer ref={music} music={data.music} labels={{ play: texts.musicPlayLabel, pause: texts.musicPauseLabel }} />}
+      </div>
+      {loader}
+    </>
   );
 }

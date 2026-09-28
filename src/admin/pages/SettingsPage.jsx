@@ -8,6 +8,7 @@ import { ActivityFeed } from './DashboardPage.jsx';
 import { Badge, Button, Card, ErrorBox, Field, Input, Loading, PageHeader, SaveStatus, TextArea, Toggle, useToast } from '../components/ui.jsx';
 
 const TEXT_FIELDS = [
+  ['loadingText', 'Texto de la pantalla de carga'],
   ['uploadPageTitle', 'Página /subir-foto: título'],
   ['uploadPageSubtitle', 'Página /subir-foto: descripción', 'textarea'],
   ['uploadPartyTab', 'Página /subir-foto: pestaña fiesta'],
