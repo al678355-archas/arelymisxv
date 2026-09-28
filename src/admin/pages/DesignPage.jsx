@@ -93,6 +93,20 @@ export default function DesignPage() {
       <div className="a-page__main">
         <PageHeader title="Diseño" description="Colores, fondos, tipografías y tamaños de toda la invitación." actions={<SaveStatus status={autosave.status} error={autosave.error} />} />
 
+        <Card title="Navegación de la invitación" description="Cómo recorren los invitados las secciones.">
+          <div className="a-choice-cards">
+            {[
+              ['pages', 'Una sección a la vez', 'Menú siempre visible arriba. Al cambiar de sección el contenido se va y llega pieza por pieza (dominó, cascada, giro, zoom…).'],
+              ['scroll', 'Desplazamiento continuo', 'Todas las secciones una debajo de otra; aparecen al bajar con el dedo o el mouse.'],
+            ].map(([value, title, desc]) => (
+              <button key={value} type="button" className={`a-choice-card ${(draft.navigationMode || 'pages') === value ? 'is-active' : ''}`} onClick={() => set({ navigationMode: value })}>
+                <strong>{title}</strong>
+                <span>{desc}</span>
+              </button>
+            ))}
+          </div>
+        </Card>
+
         <Card title="Colores">
           <div className="a-grid a-grid--colors">
             {COLORS.map(([key, label, hint]) => (

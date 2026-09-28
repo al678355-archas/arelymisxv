@@ -5,7 +5,7 @@ import { backgroundCss } from '../../lib/theme.js';
 import { Petals, Sparkles } from '../components/Decorations.jsx';
 import Icon from '../components/Icon.jsx';
 
-export default function Cover({ section, data, opened, onOpen }) {
+export default function Cover({ section, data, opened, onOpen, onNext }) {
   const { content = {}, style = {} } = section;
   const { theme, event, site } = data;
   const name = content.name || site?.quinceaneraName || '';
@@ -39,7 +39,7 @@ export default function Cover({ section, data, opened, onOpen }) {
 
       <div className="cover__inner">
         {layout === 'split' && photo?.url && (
-          <div className="cover__photo-wrap">
+          <div className="cover__photo-wrap" data-piece>
             <span className="cover__ring" aria-hidden="true" />
             <span className="cover__ring cover__ring--2" aria-hidden="true" />
             <figure className="cover__photo">
@@ -58,22 +58,30 @@ export default function Cover({ section, data, opened, onOpen }) {
         )}
 
         <div className="cover__text">
-          {content.eyebrow && <p className="cover__eyebrow">{content.eyebrow}</p>}
+          {content.eyebrow && (
+            <p className="cover__eyebrow" data-piece>
+              {content.eyebrow}
+            </p>
+          )}
           {name && (
-            <h1 className="cover__name">
+            <h1 className="cover__name" data-piece>
               <span>{name}</span>
             </h1>
           )}
           {date && (
-            <p className="cover__date">
+            <p className="cover__date" data-piece>
               <span className="cover__line" aria-hidden="true" />
               {date}
               <span className="cover__line" aria-hidden="true" />
             </p>
           )}
-          {content.text && <p className="cover__lead">{content.text}</p>}
+          {content.text && (
+            <p className="cover__lead" data-piece>
+              {content.text}
+            </p>
+          )}
 
-          <div className="cover__actions">
+          <div className="cover__actions" data-piece>
             {!opened ? (
               content.buttonText && (
                 <button type="button" className="btn btn--glow cover__open" onClick={onOpen}>
@@ -81,6 +89,11 @@ export default function Cover({ section, data, opened, onOpen }) {
                   <span>{content.buttonText}</span>
                 </button>
               )
+            ) : onNext ? (
+              <button type="button" className="cover__scroll cover__next" onClick={onNext} aria-label={content.scrollHint || 'Continuar'}>
+                {content.scrollHint && <span>{content.scrollHint}</span>}
+                <Icon name="chevronRight" size={22} />
+              </button>
             ) : (
               <a className="cover__scroll" href="#after-cover" aria-label={content.scrollHint || 'Continuar'}>
                 {content.scrollHint && <span>{content.scrollHint}</span>}

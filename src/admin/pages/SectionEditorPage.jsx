@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { api } from '../../lib/api.js';
 import { useApi } from '../hooks.js';
 import { useAutosave } from '../../hooks/useAutosave.js';
-import { SECTION_SCHEMAS, ANIMATION_OPTIONS, DECORATION_OPTIONS, ALIGN_OPTIONS } from '../sectionSchemas.js';
+import { SECTION_SCHEMAS, ANIMATION_OPTIONS, DECORATION_OPTIONS, ALIGN_OPTIONS, NAV_LABEL_FIELD, TRANSITION_OPTIONS } from '../sectionSchemas.js';
 import SchemaFields from '../components/SchemaFields.jsx';
 import { BackgroundField, ColorField } from '../components/ColorFields.jsx';
 import { VenueEditor, ItineraryManager, StoryManager } from '../components/Managers.jsx';
@@ -67,7 +67,10 @@ function StyleEditor({ style, onChange, theme }) {
       </Card>
       <Card title="Animación y decoración">
         <div className="a-grid a-grid--2">
-          <Field label="Animación de entrada">
+          <Field label="Transición al entrar y salir (modo por secciones)" hint="Cómo desaparecen y aparecen las piezas, una tras otra, al navegar con el menú.">
+            <Select value={style.transition || 'auto'} onChange={(e) => set({ transition: e.target.value })} options={TRANSITION_OPTIONS} />
+          </Field>
+          <Field label="Animación al hacer scroll (modo continuo)">
             <Select value={style.animation || 'fadeInUp'} onChange={(e) => set({ animation: e.target.value })} options={ANIMATION_OPTIONS} />
           </Field>
           <Field label="Decoración">
@@ -175,7 +178,7 @@ export default function SectionEditorPage() {
 
         {tab === 'content' && (
           <Card>
-            <SchemaFields fields={schema.fields} values={draft.content} onChange={(content) => setDraft((d) => ({ ...d, content }))} />
+            <SchemaFields fields={[NAV_LABEL_FIELD, ...schema.fields]} values={draft.content} onChange={(content) => setDraft((d) => ({ ...d, content }))} />
           </Card>
         )}
         {tab === 'data' && schema.venue && <VenueEditor prefix={schema.venue} />}

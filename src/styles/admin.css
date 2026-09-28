@@ -2696,3 +2696,43 @@ button.a-stat:hover {
   border-radius: 14px !important;
   box-shadow: 0 6px 16px -6px rgba(0, 0, 0, 0.35);
 }
+
+/* Tarjetas de elección (modo de navegación) */
+.a-choice-cards {
+  display: grid;
+  gap: 12px;
+}
+
+@media (min-width: 720px) {
+  .a-choice-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.a-choice-card {
+  display: grid;
+  gap: 4px;
+  padding: 16px 18px;
+  text-align: left;
+  border-radius: 14px;
+  border: 1.5px solid var(--a-line);
+  background: var(--a-surface);
+  color: var(--a-text);
+  font: inherit;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+
+.a-choice-card span {
+  color: var(--a-muted);
+  font-size: 13px;
+}
+
+.a-choice-card:hover {
+  border-color: #dcc3c8;
+}
+
+.a-choice-card.is-active {
+  border-color: var(--a-rose);
+  background: #fffafb;
+  box-shadow: 0 0 0 3px rgba(183, 110, 121, 0.15);
+}

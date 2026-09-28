@@ -355,10 +355,26 @@ export function Footer({ section, data }) {
             {content.title}
           </p>
         )}
-        {content.text && <p className="footer__text">{content.text}</p>}
-        {content.signature && <p className="footer__signature">{content.signature}</p>}
-        {content.hashtag && <p className="footer__hashtag">{content.hashtag}</p>}
-        {content.credits && <p className="footer__credits">{content.credits}</p>}
+        {content.text && (
+          <p className="footer__text" data-reveal="fadeInUp">
+            {content.text}
+          </p>
+        )}
+        {content.signature && (
+          <p className="footer__signature" data-reveal="fadeInUp">
+            {content.signature}
+          </p>
+        )}
+        {content.hashtag && (
+          <p className="footer__hashtag" data-reveal="fadeInUp">
+            {content.hashtag}
+          </p>
+        )}
+        {content.credits && (
+          <p className="footer__credits" data-reveal="fadeIn">
+            {content.credits}
+          </p>
+        )}
       </footer>
     </SectionShell>
   );

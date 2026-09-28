@@ -248,3 +248,20 @@ export const ALIGN_OPTIONS = [
   { value: 'left', label: 'Izquierda' },
   { value: 'right', label: 'Derecha' },
 ];
+
+export const NAV_LABEL_FIELD = {
+  name: 'navLabel',
+  label: 'Nombre en el menú',
+  type: 'text',
+  hint: 'Texto corto que aparece en la barra de navegación. Vacío = título de la sección.',
+};
+
+export const TRANSITION_OPTIONS = [
+  { value: 'auto', label: 'Automática (cambia en cada sección)' },
+  { value: 'domino', label: 'Dominó (las piezas caen y se levantan)' },
+  { value: 'cascade', label: 'Cascada (se deslizan de lado)' },
+  { value: 'flip', label: 'Giro (cada pieza gira como carta)' },
+  { value: 'zoom', label: 'Zoom con desenfoque' },
+  { value: 'rise', label: 'Elevación (suben flotando)' },
+  { value: 'swing', label: 'Péndulo (se descuelgan y balancean)' },
+];

@@ -2,10 +2,10 @@ import { useEffect } from 'react';
 
 // JavaScript solo detecta cuándo un elemento entra al viewport y le pone [data-shown];
 // la animación la hace CSS (ver styles/animations.css).
-export function useReveal(rootRef, deps = []) {
+export function useReveal(rootRef, deps = [], enabled = true) {
   useEffect(() => {
     const root = rootRef.current;
-    if (!root) return undefined;
+    if (!root || !enabled) return undefined;
 
     const show = (el) => el.setAttribute('data-shown', '');
     if (typeof IntersectionObserver === 'undefined') {
