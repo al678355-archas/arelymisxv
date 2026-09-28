@@ -45,3 +45,33 @@ export function formatBytes(bytes = 0) {
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
   return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
 }
+
+// Icono de pestaña: recorte cuadrado centrado en PNG (formato compatible con todos los navegadores).
+export function faviconUrl(url, size = 64) {
+  if (!url) return '';
+  if (!url.includes('res.cloudinary.com') || !url.includes('/upload/')) return url;
+  return url.replace('/upload/', `/upload/c_fill,g_auto,w_${size},h_${size},f_png,q_auto/`);
+}
+
+// Cambia el favicon del documento (y el icono de acceso directo en iPhone/Android).
+export function applyFavicon(url) {
+  const set = (rel, href, sizes, type) => {
+    let link = document.head.querySelector(`link[rel="${rel}"]${sizes ? `[sizes="${sizes}"]` : ''}`);
+    if (!link) {
+      link = document.createElement('link');
+      link.rel = rel;
+      if (sizes) link.sizes = sizes;
+      document.head.appendChild(link);
+    }
+    if (type) link.type = type;
+    else link.removeAttribute('type');
+    link.href = href;
+  };
+  if (url) {
+    set('icon', faviconUrl(url, 64), null, 'image/png');
+    set('apple-touch-icon', faviconUrl(url, 180), '180x180');
+  } else {
+    set('icon', '/favicon.svg', null, 'image/svg+xml');
+    set('apple-touch-icon', '/favicon.svg', '180x180');
+  }
+}

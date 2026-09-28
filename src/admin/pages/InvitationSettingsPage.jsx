@@ -5,17 +5,20 @@ import { useAutosave } from '../../hooks/useAutosave.js';
 import { useEventDraft, EventDateFields, VenueFields } from '../components/Managers.jsx';
 import { Card, ErrorBox, Field, Input, Loading, PageHeader, SaveStatus, TextArea } from '../components/ui.jsx';
 import { coverDate, longDate } from '../../lib/format.js';
+import FaviconEditor from '../components/FaviconEditor.jsx';
 
 export default function InvitationSettingsPage() {
   const site = useApi('/api/settings');
   const [siteDraft, setSiteDraft] = useState(null);
+  const [favicon, setFavicon] = useState(null);
   const siteSave = useAutosave(siteDraft, (value) => api.put('/api/settings', value));
   const { draft, setDraft, images, setImages, error, reload, autosave } = useEventDraft();
 
   useEffect(() => {
     if (site.data?.settings && !siteDraft) {
       const s = site.data.settings;
-      setSiteDraft({ quinceaneraName: s.quinceaneraName, siteTitle: s.siteTitle, metaDescription: s.metaDescription, rsvpDeadline: s.rsvpDeadline });
+      setSiteDraft({ quinceaneraName: s.quinceaneraName, siteTitle: s.siteTitle, metaDescription: s.metaDescription, rsvpDeadline: s.rsvpDeadline, faviconId: s.faviconId ?? null });
+      setFavicon(s.favicon);
     }
   }, [site.data, siteDraft]);
 
@@ -41,6 +44,17 @@ export default function InvitationSettingsPage() {
         <Field label="Descripción (al compartir el enlace)">
           <TextArea rows={2} value={siteDraft.metaDescription} onChange={(e) => setSite({ metaDescription: e.target.value })} maxLength={300} showCount />
         </Field>
+      </Card>
+
+      <Card title="Icono de la pestaña" description="La imagen pequeña que aparece en la pestaña del navegador, en favoritos y al guardar la invitación en la pantalla del celular." actions={<SaveStatus status={siteSave.status} error={siteSave.error} />}>
+        <FaviconEditor
+          value={favicon}
+          title={siteDraft.siteTitle}
+          onChange={(img) => {
+            setFavicon(img);
+            setSite({ faviconId: img?.id || null });
+          }}
+        />
       </Card>
 
       <Card title="Fecha del evento" description={draft.eventDate ? `${longDate(draft.eventDate)} · ${coverDate(draft.eventDate)}` : ''} actions={<SaveStatus status={autosave.status} error={autosave.error} />}>

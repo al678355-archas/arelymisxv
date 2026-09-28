@@ -16,6 +16,7 @@ const FOLDERS = [
   { value: 'fondos', label: 'Fondos' },
   { value: 'recuerdos', label: 'Galería recuerdos' },
   { value: 'fiesta', label: 'Galería fiesta' },
+  { value: 'favicon', label: 'Icono de la pestaña' },
 ];
 
 export default function MediaPage() {

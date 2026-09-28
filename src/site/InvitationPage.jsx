@@ -2,6 +2,7 @@ import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import { useLiveInvitation } from '../hooks/useLiveInvitation.js';
 import { useReveal } from '../hooks/useReveal.js';
 import { themeVars, loadGoogleFonts } from '../lib/theme.js';
+import { applyFavicon } from '../lib/image.js';
 import Cover from './sections/Cover.jsx';
 import { Intro, Message, People, Countdown } from './sections/TextSections.jsx';
 import { Calendar, Venue, Itinerary, DressCode, Story } from './sections/EventSections.jsx';
@@ -49,6 +50,10 @@ export function useSiteTheme(data) {
     }
     meta.content = data.site.metaDescription || '';
   }, [data?.site]);
+  const faviconSrc = data?.site?.favicon?.url || '';
+  useEffect(() => {
+    if (data) applyFavicon(faviconSrc);
+  }, [data, faviconSrc]);
   return vars;
 }
 
