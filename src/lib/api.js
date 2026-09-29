@@ -1,5 +1,6 @@
 // Cliente HTTP para la API. Los errores siempre llegan con un mensaje legible.
-export const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:4580').replace(/\/$/, '');
+// En producción siempre se usa VITE_API_URL (Render); localhost solo como respaldo en desarrollo.
+export const API_URL = (import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:4580' : '')).replace(/\/$/, '');
 
 const TOKEN_KEY = 'xv_admin_token';
 
