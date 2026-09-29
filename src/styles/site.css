@@ -1869,10 +1869,6 @@ textarea.input {
 
 /* ─── Footer ────────────────────────────────────────────────────────────── */
 
-.xv-footer {
-  --s-bg: var(--c-footer);
-}
-
 .footer {
   display: grid;
   gap: 8px;
@@ -1885,7 +1881,7 @@ textarea.input {
   font-family: var(--f-script);
   font-size: clamp(2.6em, 8vw, 4em);
   line-height: 1.2;
-  color: var(--s-title, var(--c-card));
+  color: var(--s-title, var(--c-title));
 }
 
 .footer__text {

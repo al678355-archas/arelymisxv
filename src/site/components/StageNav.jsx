@@ -52,6 +52,12 @@ export default function StageNav({ sections, current, onSelect, onPrev, onNext, 
               </button>
             </li>
           ))}
+          {/* Acceso al panel: candado justo después de la última sección */}
+          <li>
+            <a className="stage-nav__lock" href="/admin/login" aria-label={adminLabel || 'Iniciar sesión'} title={adminLabel || 'Iniciar sesión'}>
+              <Icon name="lock" size={16} />
+            </a>
+          </li>
         </ul>
         <button type="button" className="stage-nav__menu" onClick={() => setOpen((v) => !v)} aria-expanded={open} aria-label="Ver todas las secciones">
           <Icon name={open ? 'close' : 'grid'} size={20} />
@@ -68,14 +74,6 @@ export default function StageNav({ sections, current, onSelect, onPrev, onNext, 
               </button>
             </li>
           ))}
-          {adminLabel && (
-            <li className="stage-panel__admin" style={{ '--i': sections.length }}>
-              <a href="/admin/login">
-                <Icon name="lock" size={15} />
-                <span>{adminLabel}</span>
-              </a>
-            </li>
-          )}
         </ol>
       </div>
 

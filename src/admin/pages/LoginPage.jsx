@@ -59,6 +59,10 @@ export default function LoginPage() {
         <Button type="submit" loading={busy} icon="lock" className="a-btn--block">
           Iniciar sesión
         </Button>
+        <a href="/" className="a-btn a-btn--ghost a-btn--block">
+          <Icon name="chevronLeft" size={17} />
+          <span>Volver al sitio</span>
+        </a>
       </form>
     </div>
   );

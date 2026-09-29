@@ -180,7 +180,7 @@ export default function InvitationPage() {
   if (!data) return <>{null}{loader}</>;
 
   const name = data.site?.quinceaneraName;
-  const rootClass = ['xv', stageMode && 'xv--stage', editor && 'xv--editor', !animations && 'no-anim', opened && 'is-opened', navVisible && 'has-nav'].filter(Boolean).join(' ');
+  const rootClass = ['xv', `xv--photo-${data.theme?.photoRatio || 'square'}`, stageMode && 'xv--stage', editor && 'xv--editor', !animations && 'no-anim', opened && 'is-opened', navVisible && 'has-nav'].filter(Boolean).join(' ');
 
   return (
     <>

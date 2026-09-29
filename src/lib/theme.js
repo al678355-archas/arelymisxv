@@ -62,6 +62,8 @@ export function resolveColor(value, theme) {
   return SAFE_COLOR.test(v) ? v : undefined;
 }
 
+export const PHOTO_RATIOS = { square: '1 / 1', landscape: '16 / 9', portrait: '9 / 16' };
+
 // En la invitación los tokens se resuelven como variables CSS (cambian en vivo con la paleta).
 const cssColor = (value) => resolveColor(value);
 
@@ -103,6 +105,8 @@ export function themeVars(theme) {
     '--color-glow': 'color-mix(in srgb, var(--c-glow) 55%, transparent)',
     '--color-danger': 'color-mix(in srgb, #c0394f 85%, var(--c-primary))',
     '--page-bg': backgroundCss(theme.pageBackground, theme) || 'var(--c-bg)',
+    // Formato uniforme de las fotografías (cuadrado, 16:9 o 9:16)
+    '--photo-ratio': PHOTO_RATIOS[theme.photoRatio] || PHOTO_RATIOS.square,
     '--f-title': fontStack(theme.fontTitle, 'serif'),
     '--f-script': fontStack(theme.fontScript, 'cursive'),
     '--f-subtitle': fontStack(theme.fontSubtitle, 'serif'),

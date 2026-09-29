@@ -431,3 +431,130 @@
 .stage-panel__admin a:active {
   transform: scale(0.96);
 }
+
+/* ═══ Fotografías con formato uniforme (Diseño → Formato de fotografías) ════
+   Cuadrado 1:1, horizontal 16:9 o vertical 9:16. Nunca se deforman: se recortan
+   con object-fit: cover. */
+
+.xv .cover__photo,
+.xv .cover--rectangle .cover__photo {
+  aspect-ratio: var(--photo-ratio, 1 / 1);
+  border-radius: var(--radius);
+}
+
+.xv .cover--circle .cover__photo {
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+
+.xv .cover--arch .cover__photo {
+  border-radius: 999px 999px var(--radius) var(--radius);
+}
+
+.xv .cover--rectangle .cover__ring,
+.xv .cover--arch .cover__ring {
+  border-radius: calc(var(--radius) + 18px);
+}
+
+.xv .cover__photo img {
+  object-fit: cover;
+}
+
+/* Ancho de la foto de portada según el formato */
+.xv--photo-square .cover__photo-wrap {
+  width: min(72vw, 400px);
+}
+
+.xv--photo-landscape .cover__photo-wrap {
+  width: min(88vw, 560px);
+}
+
+.xv--photo-portrait .cover__photo-wrap {
+  width: min(52vw, 290px);
+}
+
+.xv .side-image img,
+.xv .side-image--contain img,
+.xv .story__photo img,
+.xv .venue__image img {
+  aspect-ratio: var(--photo-ratio, 1 / 1);
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.xv .story__photo--empty {
+  aspect-ratio: var(--photo-ratio, 1 / 1);
+}
+
+.xv--photo-portrait .side-image,
+.xv--photo-portrait .story__photo {
+  width: min(100%, 320px);
+}
+
+.xv--photo-portrait .venue__image {
+  max-width: 340px;
+}
+
+/* Galerías: cuadrícula pareja en lugar de columnas de alturas distintas */
+.xv .masonry {
+  columns: auto;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-gap, 12px);
+}
+
+@media (min-width: 768px) {
+  .xv .masonry {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--s-gap, 16px);
+  }
+}
+
+@media (min-width: 1200px) {
+  .xv .masonry {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.xv--photo-landscape .masonry {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+}
+
+.xv .masonry__item {
+  aspect-ratio: var(--photo-ratio, 1 / 1);
+  margin: 0;
+}
+
+.xv .masonry__item img {
+  object-fit: cover;
+}
+
+/* Candado de acceso al panel, dentro de la barra del menú */
+.stage-nav__lock {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  margin-left: 2px;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--c-nav) 22%, transparent);
+  color: var(--c-nav);
+  opacity: 0.7;
+  text-decoration: none;
+  transition: opacity 0.3s, background 0.3s, color 0.3s, border-color 0.3s, transform 0.25s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+
+.stage-nav__lock:hover,
+.stage-nav__lock:focus-visible {
+  opacity: 1;
+  color: var(--c-btn-text);
+  background: var(--c-btn);
+  border-color: var(--c-btn);
+  outline: none;
+}
+
+.stage-nav__lock:active {
+  transform: scale(0.92);
+}
+.stage-nav__list { align-items: center; }

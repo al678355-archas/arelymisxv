@@ -77,6 +77,22 @@ export default function DesignPage() {
       <div className="a-page__main">
         <PageHeader title="Diseño" description="Navegación, fondo general, tipografías, tamaños y efectos de toda la invitación." actions={<SaveStatus status={autosave.status} error={autosave.error} />} />
 
+        <Card title="Formato de fotografías" description="Todas las fotos de la invitación (portada, secciones, historia, lugares y galerías) se muestran con el mismo formato, sin deformarse.">
+          <div className="a-choice-cards a-choice-cards--3">
+            {[
+              ['square', 'Cuadrado', '1:1', '1 / 1'],
+              ['landscape', 'Rectángulo horizontal', '16:9', '16 / 9'],
+              ['portrait', 'Rectángulo vertical', '9:16', '9 / 16'],
+            ].map(([value, title, ratio, css]) => (
+              <button key={value} type="button" className={`a-choice-card ${(draft.photoRatio || 'square') === value ? 'is-active' : ''}`} onClick={() => set({ photoRatio: value })}>
+                <span className="a-ratio-sample" style={{ aspectRatio: css }} aria-hidden="true" />
+                <strong>{title}</strong>
+                <span>{ratio}</span>
+              </button>
+            ))}
+          </div>
+        </Card>
+
         <Card title="Navegación de la invitación" description="Cómo recorren los invitados las secciones.">
           <div className="a-choice-cards">
             {[

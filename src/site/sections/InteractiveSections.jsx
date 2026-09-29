@@ -33,7 +33,7 @@ export function Gallery({ section, data }) {
               className="masonry__item"
               onClick={() => setOpen(i)}
               data-reveal="scaleIn"
-              style={{ '--delay': `${(i % 6) * 70}ms`, aspectRatio: item.image?.width ? `${item.image.width} / ${item.image.height}` : undefined }}
+              style={{ '--delay': `${(i % 6) * 70}ms` }}
               aria-label={`Ver foto de ${item.uploaderName}`}
             >
               <img src={cld(item.image.url, { w: 600 })} alt={item.message || `Foto de ${item.uploaderName}`} loading="lazy" width={item.image.width} height={item.image.height} />
@@ -374,12 +374,6 @@ export function Footer({ section, data }) {
           <p className="footer__credits" data-reveal="fadeIn">
             {content.credits}
           </p>
-        )}
-        {data.site?.texts?.adminLinkText && (
-          <a className="footer__admin" href="/admin/login">
-            <Icon name="lock" size={13} />
-            <span>{data.site.texts.adminLinkText}</span>
-          </a>
         )}
       </footer>
     </SectionShell>
