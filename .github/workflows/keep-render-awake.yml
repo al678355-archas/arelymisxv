@@ -1,0 +1,30 @@
+# Mantiene despierto el backend en Render (el plan gratuito lo duerme tras 15 min sin tráfico).
+# Visita /api/health cada 5 minutos aunque nadie tenga la invitación abierta.
+# Nota: GitHub puede retrasar unos minutos las ejecuciones programadas y las desactiva
+# si el repositorio pasa 60 días sin actividad (basta con cualquier commit para reactivarlas).
+name: Mantener backend despierto
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Ping a /api/health
+        env:
+          HEALTH_URL: https://arelymisxv-b.onrender.com/api/health
+        run: |
+          for i in 1 2 3; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 70 "$HEALTH_URL" || true)
+            echo "Intento $i: HTTP $code"
+            [ "$code" = "200" ] && exit 0
+            sleep 10
+          done
+          echo "El backend no respondió 200"
+          exit 1

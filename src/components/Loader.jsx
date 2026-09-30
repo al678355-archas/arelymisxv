@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 // Pantalla de carga animada (solo CSS). Los estilos viven en index.html para que se vea
 // desde el primer instante, antes de que cargue JavaScript.
 
@@ -33,6 +34,13 @@ export function rememberLoaderLook(data) {
 }
 
 export default function Loader({ done = false, error = null, onRetry, showName = true }) {
+  // Si tarda, avisar que el servidor está despertando (en vez de parecer congelado)
+  const [slow, setSlow] = useState(false);
+  useEffect(() => {
+    if (done || error) return undefined;
+    const t = setTimeout(() => setSlow(true), 6000);
+    return () => clearTimeout(t);
+  }, [done, error]);
   const c = readCache();
   const style = {
     ...(c.primary && { '--l-primary': c.primary }),
@@ -82,6 +90,7 @@ export default function Loader({ done = false, error = null, onRetry, showName =
             </span>
           </p>
           <span className="xv-loader__bar" />
+          {slow && <p className="xv-loader__slow">Estamos preparando todo, puede tardar unos segundos…</p>}
         </>
       )}
     </div>
