@@ -97,7 +97,7 @@
   height: 38px;
   flex-shrink: 0;
   border-radius: 12px;
-  background: linear-gradient(135deg, var(--a-rose), #d9a0a8);
+  background: linear-gradient(135deg, var(--a-rose), color-mix(in srgb, var(--a-rose) 60%, #fff));
   color: #fff;
   font-family: Georgia, serif;
   font-weight: 700;
@@ -416,7 +416,7 @@
 .a-btn--primary {
   background: var(--a-rose);
   color: #fff;
-  box-shadow: 0 4px 14px -6px rgba(183, 110, 121, 0.8);
+  box-shadow: 0 4px 14px -6px color-mix(in srgb, var(--a-rose) 80%, transparent);
 }
 
 .a-btn--primary:hover:not(:disabled) {
@@ -429,7 +429,7 @@
 }
 
 .a-btn--soft:hover:not(:disabled) {
-  background: #efd5d9;
+  background: color-mix(in srgb, var(--a-rose) 22%, #fff);
 }
 
 .a-btn--ghost {
@@ -595,7 +595,7 @@ label.a-btn.is-busy {
 .a-input:focus {
   outline: none;
   border-color: var(--a-rose);
-  box-shadow: 0 0 0 3px rgba(183, 110, 121, 0.15);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--a-rose) 15%, transparent);
 }
 
 .a-textarea {
@@ -2468,7 +2468,7 @@ button.a-stat:hover {
   margin: 0;
   font-family: Georgia, serif;
   font-size: clamp(180px, 40vw, 420px);
-  color: rgba(183, 110, 121, 0.06);
+  color: color-mix(in srgb, var(--a-rose) 6%, transparent);
   font-style: italic;
 }
 
@@ -2477,7 +2477,7 @@ button.a-stat:hover {
   width: min(80vw, 640px);
   aspect-ratio: 1;
   border-radius: 50%;
-  border: 1px dashed rgba(183, 110, 121, 0.25);
+  border: 1px dashed color-mix(in srgb, var(--a-rose) 25%, transparent);
   animation: rotateSlow 80s linear infinite;
 }
 
@@ -2728,11 +2728,11 @@ button.a-stat:hover {
 }
 
 .a-choice-card:hover {
-  border-color: #dcc3c8;
+  border-color: color-mix(in srgb, var(--a-rose) 40%, #fff);
 }
 
 .a-choice-card.is-active {
   border-color: var(--a-rose);
-  background: #fffafb;
-  box-shadow: 0 0 0 3px rgba(183, 110, 121, 0.15);
+  background: color-mix(in srgb, var(--a-rose) 4%, #fff);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--a-rose) 15%, transparent);
 }

@@ -4,6 +4,7 @@ import { useAuth } from './AdminApp.jsx';
 import { Icon } from './components/ui.jsx';
 import { subscribe, isLiveConnected } from '../lib/live.js';
 import { usePalette } from './palette.jsx';
+import { resolveColor } from '../lib/theme.js';
 
 export const NAV = [
   { to: '/admin', label: 'Dashboard', icon: 'grid', end: true },
@@ -41,17 +42,31 @@ function LiveIndicator() {
   );
 }
 
+// El panel toma el color principal de la paleta de la invitación como color de acento.
+function adminThemeVars(theme) {
+  const primary = resolveColor(theme?.primaryColor);
+  if (!primary) return undefined;
+  return {
+    '--a-rose': primary,
+    '--a-rose-dark': `color-mix(in srgb, ${primary} 80%, #000)`,
+    '--a-rose-soft': `color-mix(in srgb, ${primary} 14%, #fff)`,
+    '--a-bg': `color-mix(in srgb, ${primary} 6%, #f7f7f7)`,
+    '--a-surface-2': `color-mix(in srgb, ${primary} 4%, #fafafa)`,
+    '--a-line': `color-mix(in srgb, ${primary} 12%, #ececec)`,
+  };
+}
+
 export default function Layout({ children }) {
   const { admin, logout } = useAuth();
   const [open, setOpen] = useState(false);
   const location = useLocation();
-  const { refresh: refreshPalette } = usePalette();
+  const { theme, refresh: refreshPalette } = usePalette();
   useEffect(() => refreshPalette(), [refreshPalette]);
 
   useEffect(() => setOpen(false), [location.pathname]);
 
   return (
-    <div className={`admin ${open ? 'is-nav-open' : ''}`}>
+    <div className={`admin ${open ? 'is-nav-open' : ''}`} style={adminThemeVars(theme)}>
       <aside className="a-sidebar" aria-label="Menú principal">
         <div className="a-sidebar__brand">
           <span className="a-sidebar__logo">XV</span>
