@@ -42,17 +42,24 @@ function LiveIndicator() {
   );
 }
 
-// El panel toma el color principal de la paleta de la invitación como color de acento.
+// El panel sigue la paleta de la invitación: el color principal es el acento y
+// los tonos neutros (fondos, bordes, textos) se tiñen con él para que combinen.
 function adminThemeVars(theme) {
   const primary = resolveColor(theme?.primaryColor);
   if (!primary) return undefined;
+  const accent = resolveColor(theme?.accentColor) || resolveColor(theme?.secondaryColor);
   return {
     '--a-rose': primary,
     '--a-rose-dark': `color-mix(in srgb, ${primary} 80%, #000)`,
     '--a-rose-soft': `color-mix(in srgb, ${primary} 14%, #fff)`,
+    '--a-accent': accent ? `color-mix(in srgb, ${accent} 70%, #fff)` : undefined,
     '--a-bg': `color-mix(in srgb, ${primary} 6%, #f7f7f7)`,
     '--a-surface-2': `color-mix(in srgb, ${primary} 4%, #fafafa)`,
     '--a-line': `color-mix(in srgb, ${primary} 12%, #ececec)`,
+    '--a-text': `color-mix(in srgb, ${primary} 12%, #262626)`,
+    '--a-muted': `color-mix(in srgb, ${primary} 20%, #7a7a7a)`,
+    '--a-gray': `color-mix(in srgb, ${primary} 15%, #959595)`,
+    '--a-gray-soft': `color-mix(in srgb, ${primary} 6%, #ededed)`,
   };
 }
 

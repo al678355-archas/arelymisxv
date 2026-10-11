@@ -159,7 +159,11 @@ export default function PalettesPage() {
         >
           <div className="a-current-palette">
             {KEYS.map((k) => (
-              <ColorField key={k} label={PALETTE_LABELS[k]} value={draft[k]} onChange={(v) => setDraft((d) => ({ ...d, [k]: v }))} tokens={false} />
+              <ColorField key={k} label={PALETTE_LABELS[k]} value={draft[k]} onChange={(v) => {
+                  setDraft((d) => ({ ...d, [k]: v }));
+                  // El panel cambia de color al instante, sin esperar al guardado
+                  setTheme((t) => (t ? { ...t, [k]: v } : t));
+                }} tokens={false} />
             ))}
           </div>
         </Card>

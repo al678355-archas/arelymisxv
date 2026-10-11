@@ -97,7 +97,7 @@
   height: 38px;
   flex-shrink: 0;
   border-radius: 12px;
-  background: linear-gradient(135deg, var(--a-rose), color-mix(in srgb, var(--a-rose) 60%, #fff));
+  background: linear-gradient(135deg, var(--a-rose), var(--a-accent, color-mix(in srgb, var(--a-rose) 60%, #fff)));
   color: #fff;
   font-family: Georgia, serif;
   font-weight: 700;
@@ -589,7 +589,7 @@ label.a-btn.is-busy {
 }
 
 .a-input:hover {
-  border-color: #dccfd2;
+  border-color: color-mix(in srgb, var(--a-rose) 18%, #d4d4d4);
 }
 
 .a-input:focus {
@@ -684,7 +684,7 @@ label.a-btn.is-busy {
   height: 24px;
   flex-shrink: 0;
   border-radius: 99px;
-  background: #ddd3d5;
+  background: color-mix(in srgb, var(--a-rose) 15%, #d8d8d8);
   transition: background 0.25s;
 }
 
@@ -749,7 +749,7 @@ label.a-btn.is-busy {
   height: 20px;
   flex-shrink: 0;
   border-radius: 6px;
-  border: 1.5px solid #cfc2c5;
+  border: 1.5px solid color-mix(in srgb, var(--a-rose) 18%, #c8c8c8);
   background: var(--a-surface);
   color: transparent;
   transition: all 0.2s;
@@ -907,13 +907,13 @@ label.a-btn.is-busy {
   font-weight: 600;
   white-space: nowrap;
   background: var(--a-gray-soft);
-  color: #6d6266;
+  color: color-mix(in srgb, var(--a-rose) 15%, #666);
 }
 
 .a-badge--rose { background: var(--a-rose-soft); color: var(--a-rose-dark); }
 .a-badge--green { background: var(--a-green-soft); color: var(--a-green); }
 .a-badge--amber { background: var(--a-amber-soft); color: #a8761a; }
-.a-badge--gray { background: var(--a-gray-soft); color: #6d6266; }
+.a-badge--gray { background: var(--a-gray-soft); color: color-mix(in srgb, var(--a-rose) 15%, #666); }
 .a-badge--violet { background: var(--a-violet-soft); color: var(--a-violet); }
 
 .a-stats {
@@ -1010,7 +1010,7 @@ button.a-stat:hover {
 .a-side-card:hover,
 .a-side-card.is-active {
   border-color: var(--a-rose);
-  background: #fffafb;
+  background: color-mix(in srgb, var(--a-rose) 4%, #fff);
 }
 
 .a-side-card__total {
@@ -1226,7 +1226,7 @@ button.a-stat:hover {
   gap: 4px;
   padding: 4px;
   border-radius: 12px;
-  background: #efe7e9;
+  background: color-mix(in srgb, var(--a-rose) 8%, #ececec);
   overflow-x: auto;
   width: fit-content;
   max-width: 100%;
@@ -1429,7 +1429,7 @@ button.a-stat:hover {
   gap: 10px;
   padding: 12px 16px;
   border-radius: 12px;
-  background: #2f2529;
+  background: var(--a-text);
   color: #fff;
   font-weight: 500;
   box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.4);
@@ -1463,7 +1463,7 @@ button.a-stat:hover {
   position: relative;
   aspect-ratio: 1;
   border-radius: 12px;
-  border: 1.5px dashed #dccfd2;
+  border: 1.5px dashed color-mix(in srgb, var(--a-rose) 18%, #d4d4d4);
   background: var(--a-surface-2);
   overflow: hidden;
   display: grid;
@@ -1971,7 +1971,7 @@ button.a-stat:hover {
 
 .a-status--green { color: var(--a-green); background-color: var(--a-green-soft); border-color: transparent; }
 .a-status--amber { color: #a8761a; background-color: var(--a-amber-soft); border-color: transparent; }
-.a-status--gray { color: #6d6266; background-color: var(--a-gray-soft); border-color: transparent; }
+.a-status--gray { color: color-mix(in srgb, var(--a-rose) 15%, #666); background-color: var(--a-gray-soft); border-color: transparent; }
 
 @media (max-width: 760px) {
   .a-table-wrap {
